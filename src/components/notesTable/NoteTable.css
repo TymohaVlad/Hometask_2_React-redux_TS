@@ -1,0 +1,25 @@
+.notes__title{
+    text-align: center;
+}
+.table{
+    margin: auto;
+    font-size: 22px;
+}
+tbody{
+    text-align: center;
+}
+th, td {
+    padding: 15px;
+  }
+.table__buttons{
+    width: 40px;
+    height: 30px;
+}
+.icon__btn{
+    width: 20px;
+    height: 20px;
+}
+.btn__container{
+    display: flex;
+    gap: 3%;
+}
