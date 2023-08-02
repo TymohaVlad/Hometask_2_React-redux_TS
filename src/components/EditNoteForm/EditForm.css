@@ -33,7 +33,7 @@
     text-decoration: none;
     cursor: pointer;
   }
-  .addNew__form {
+  .edit__form {
     display: flex;
     flex-direction: column;
     max-width: 60%;
@@ -53,7 +53,7 @@
     font-size: 18px;
     border-radius: 8px;
   }
-  .buttons__contsiner {
+  .buttons__container {
     display: flex;
     justify-content: center;
     gap: 2%;

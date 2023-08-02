@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNote, Note } from '../../store/reducers/notesSlice';
 import { RootState } from '../../store/store';
@@ -6,15 +6,17 @@ import { FaEdit } from 'react-icons/fa';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { PiArchiveDuotone } from 'react-icons/pi';
 import { RiInboxUnarchiveFill } from 'react-icons/ri';
-import { useState } from 'react';
 import AddNoteForm from '../AddNoteForm/AddNoteForm';
+import EditNoteForm from '../EditNoteForm/EditNoteForm';
 
 import './NoteTable.css';
-import EditNoteForm from '../EditNoteForm/EditNoteForm';
 
 function NotesTable() {
   const dispatch = useDispatch();
   const notesState = useSelector((state: RootState) => state.notes.notes);
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
 
   const formatCreateDate = (createTime: string) => {
     const createDate = new Date(createTime);
@@ -24,8 +26,6 @@ function NotesTable() {
       year: 'numeric',
     });
   };
-
-  const [showForm, setShowForm] = useState(false);
 
   const handleShowForm = () => {
     setShowForm(!showForm);
@@ -37,17 +37,22 @@ function NotesTable() {
     }
     handleShowForm();
   };
-  const [showEditForm, setShowEditForm] = useState(false);
 
-  const handleShowEditForm = () => {
-    setShowEditForm(!showEditForm)
-  }
+  const handleShowEditForm = (note: Note) => {
+    setSelectedNote(note);
+    setShowEditForm(true);
+  };
 
   const handleEditNote = (editNote: Note | null) => {
     if (editNote !== null) {
-      dispatch(addNote(editNote));
+    dispatch(addNote(editNote))
     }
-    handleShowEditForm()
+    handleCloseEditForm();
+  };
+
+  const handleCloseEditForm = () => {
+    setSelectedNote(null);
+    setShowEditForm(false);
   };
 
   return (
@@ -65,7 +70,7 @@ function NotesTable() {
               <th>
                 {' '}
                 <button className="archivatedAll table__buttons">
-                  <FaEdit className="icon__btn" />
+                  <PiArchiveDuotone className="icon__btn" />
                 </button>
                 <button className="deleteAll table__buttons">
                   <BsFillTrashFill className="icon__btn" />
@@ -84,7 +89,7 @@ function NotesTable() {
                 <td>
                   <div className="btn__container">
                     <button
-                      onClick={handleShowEditForm}
+                      onClick={() => handleShowEditForm(note)}
                       className="edit table__buttons"
                     >
                       <FaEdit className="icon__btn" />
@@ -108,7 +113,11 @@ function NotesTable() {
           Add Note
         </button>
         <AddNoteForm showForm={showForm} onClose={handleAddNote} />
-        <EditNoteForm showEditForm={showEditForm} onClose={handleEditNote}/> 
+        <EditNoteForm
+          showEditForm={showEditForm}
+          onClose={handleEditNote}
+          selectedNote={selectedNote}
+        />
       </div>
     </main>
   );
