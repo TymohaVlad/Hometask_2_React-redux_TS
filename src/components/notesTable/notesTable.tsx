@@ -8,7 +8,8 @@ import { PiArchiveDuotone } from 'react-icons/pi';
 import { RiInboxUnarchiveFill } from 'react-icons/ri';
 import AddNoteForm from '../AddNoteForm/AddNoteForm';
 import EditNoteForm from '../EditNoteForm/EditNoteForm';
-
+import ArchivedNote from '../Archived/ArchivedNote';
+import {archiveNote} from '../../store/reducers/ArchivedSlise'
 import './NoteTable.css';
 
 function NotesTable() {
@@ -42,7 +43,6 @@ function NotesTable() {
     setSelectedNote(note);
     setShowEditForm(true);
   };
-
   const handleEditNote = (editNote: Note | null) => {
     if (editNote !== null) {
     dispatch(addNote(editNote))
@@ -55,6 +55,10 @@ function NotesTable() {
     setShowEditForm(false);
   };
 
+  const handleArchiveNote = (noteId: number) => {
+    dispatch(archiveNote(noteId)); 
+    console.log('dispatch')
+  };
   return (
     <main className="main">
       <h1 className="notes__title">My Notes</h1>
@@ -94,7 +98,7 @@ function NotesTable() {
                     >
                       <FaEdit className="icon__btn" />
                     </button>
-                    <button className="archivated table__buttons">
+                    <button onClick={() => handleArchiveNote(note.id)} className="archivated table__buttons">
                       <PiArchiveDuotone className="icon__btn" />
                     </button>
                     <button className="unarchivated table__buttons">
@@ -118,6 +122,7 @@ function NotesTable() {
           onClose={handleEditNote}
           selectedNote={selectedNote}
         />
+        <ArchivedNote/>
       </div>
     </main>
   );

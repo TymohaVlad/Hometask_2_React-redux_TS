@@ -26,7 +26,6 @@ function EditNoteForm({
   const uniqueCategories = new Set<string>(notesDataState.map((note) => note.category));
 
   function categoryOptions() {
-    // Преобразуем Set обратно в массив и создаем опции для выбора категорий
     return Array.from(uniqueCategories).map((category) => (
       <option key={category} value={category}>
         {category}

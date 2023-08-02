@@ -4,7 +4,7 @@ export const notesData = [
       name: 'Shopping list',
       createTime: '2023-07-24 ',
       content: 'Some content',
-      category: 'Quote',
+      category: 'Random Thought',
       dates: [],
       archived: false,
     },

@@ -1,5 +1,5 @@
 import React from 'react';
-import NotesTable from './components/notesTable/NotesTable';
+import NotesTable from './components/notesTable/notesTable';
 import './App.css';
 
 
