@@ -7,9 +7,10 @@ import { BsFillTrashFill } from 'react-icons/bs';
 import { PiArchiveDuotone } from 'react-icons/pi';
 import { RiInboxUnarchiveFill } from 'react-icons/ri';
 import { useState } from 'react';
-import AddNoteForm from './AddNoteForm';
+import AddNoteForm from '../AddNoteForm/AddNoteForm';
 
 import './NoteTable.css';
+import EditNoteForm from '../EditNoteForm/EditNoteForm';
 
 function NotesTable() {
   const dispatch = useDispatch();
@@ -30,9 +31,23 @@ function NotesTable() {
     setShowForm(!showForm);
   };
 
-  const handleAddNote = (newNote: Note) => {
-    dispatch(addNote(newNote))
+  const handleAddNote = (newNote: Note | null) => {
+    if (newNote !== null) {
+      dispatch(addNote(newNote));
+    }
     handleShowForm();
+  };
+  const [showEditForm, setShowEditForm] = useState(false);
+
+  const handleShowEditForm = () => {
+    setShowEditForm(!showEditForm)
+  }
+
+  const handleEditNote = (editNote: Note | null) => {
+    if (editNote !== null) {
+      dispatch(addNote(editNote));
+    }
+    handleShowEditForm()
   };
 
   return (
@@ -68,7 +83,10 @@ function NotesTable() {
                 <td>{note.dates.join(', ')}</td>
                 <td>
                   <div className="btn__container">
-                    <button className="edit table__buttons">
+                    <button
+                      onClick={handleShowEditForm}
+                      className="edit table__buttons"
+                    >
                       <FaEdit className="icon__btn" />
                     </button>
                     <button className="archivated table__buttons">
@@ -90,6 +108,7 @@ function NotesTable() {
           Add Note
         </button>
         <AddNoteForm showForm={showForm} onClose={handleAddNote} />
+        <EditNoteForm showEditForm={showEditForm} onClose={handleEditNote}/> 
       </div>
     </main>
   );

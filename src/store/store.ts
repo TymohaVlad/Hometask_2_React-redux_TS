@@ -4,7 +4,6 @@ import notesSlice from './reducers/notesSlice'
 
 const rootReducers = combineReducers({
     notes: notesSlice,
-    // summary: summaryReducer,
   });
   
   export const store = configureStore({

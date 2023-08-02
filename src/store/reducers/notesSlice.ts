@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, Draft } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, Draft, isAction } from '@reduxjs/toolkit';
 import { notesData } from '../../components/data';
 
 export interface Note {
@@ -28,5 +28,5 @@ const notesSlice = createSlice({
   },
 });
 
-export const { setNotes, addNote } = notesSlice.actions;
+export const { setNotes, addNote,  } = notesSlice.actions;
 export default notesSlice.reducer;
