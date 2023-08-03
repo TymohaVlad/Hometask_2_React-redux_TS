@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { archiveNote, deleteNote, Note } from '../../store/reducers/notesSlice';
+import { archiveNote, deleteNote } from '../../store/reducers/notesSlice';
 import { RiInboxUnarchiveFill } from 'react-icons/ri';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { FaWindowClose } from 'react-icons/fa';

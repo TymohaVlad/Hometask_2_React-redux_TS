@@ -21,7 +21,6 @@ interface Note {
 }
 
 function AddNoteForm({ showForm, onClose }: AddNoteFormProps) {
-  const notesDataState = useSelector((state: RootState) => state.notes.notes)
   const [newNote, setNewNote] = useState<Note>({
     id: Date.now(),
     name: '',
@@ -31,13 +30,6 @@ function AddNoteForm({ showForm, onClose }: AddNoteFormProps) {
     dates: [],
     archived: false,
   });
-  function createCategoryOptions() {
-    return notesDataState.map((note) => (
-      <option key={note.id} value={note.category}>
-        {note.category}
-      </option>
-    ));
-  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
