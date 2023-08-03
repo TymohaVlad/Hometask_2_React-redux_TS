@@ -3,28 +3,36 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { archiveNote, deleteNote, Note } from '../../store/reducers/notesSlice';
 import { RiInboxUnarchiveFill } from 'react-icons/ri';
-
-import './ArchivedNotes.css'
+import { BsFillTrashFill } from 'react-icons/bs';
+import { FaWindowClose } from 'react-icons/fa';
+import './ArchivedNotes.css';
 
 function ArchivedNote() {
   const dispatch = useDispatch();
   const archivedNotes = useSelector((state: RootState) => state.notes.notes);
 
   const countActiveNotesByCategory = (category: string) => {
-    return archivedNotes.filter((note) => note.category === category && !note.archived).length;
+    return archivedNotes.filter(
+      (note) => note.category === category && !note.archived
+    ).length;
   };
 
   const countArchivedNotesByCategory = (category: string) => {
-    return archivedNotes.filter((note) => note.category === category && note.archived).length;
+    return archivedNotes.filter(
+      (note) => note.category === category && note.archived
+    ).length;
   };
 
-  const uniqueCategories = [...new Set(archivedNotes.map((note) => note.category))];
+  const uniqueCategories = [
+    ...new Set(archivedNotes.map((note) => note.category)),
+  ];
 
-  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
 
   const handleUnarchiveNote = (noteId: number) => {
     dispatch(archiveNote(noteId));
+    handleCloseModal();
   };
 
   const handleDeleteNote = (noteId: number) => {
@@ -32,20 +40,24 @@ function ArchivedNote() {
     handleCloseModal();
   };
 
-  const handleShowModal = (note: Note) => {
-    setSelectedNote(note);
+  const handleShowModal = (category: string) => {
+    setSelectedCategory(category);
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
-    setSelectedNote(null);
+    setSelectedCategory('');
     setShowModal(false);
   };
+
+  const archivedNotesForCategory = archivedNotes.filter(
+    (note) => note.category === selectedCategory && note.archived
+  );
 
   return (
     <section className="summary__section">
       <div className="summary__table-container">
-        <table>
+        <table className="summary__table">
           <thead>
             <tr>
               <th>Note category</th>
@@ -61,17 +73,15 @@ function ArchivedNote() {
                 <td>{countActiveNotesByCategory(category)}</td>
                 <td>{countArchivedNotesByCategory(category)}</td>
                 <td>
-                  {archivedNotes
-                    .filter((note) => note.category === category && note.archived)
-                    .map((note) => (
-                      <button
-                        key={note.id}
-                        className="unarchivated table__buttons"
-                        onClick={() => handleShowModal(note)}
-                      >
-                        <RiInboxUnarchiveFill className="icon__btn" />
-                      </button>
-                    ))}
+                  {countArchivedNotesByCategory(category) > 0 && (
+                    <button
+                      id="show__note"
+                      className="unarchivated table__buttons"
+                      onClick={() => handleShowModal(category)}
+                    >
+                      Show archived notes
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -79,15 +89,32 @@ function ArchivedNote() {
         </table>
       </div>
 
-      {showModal && selectedNote && (
+      {showModal && selectedCategory && (
         <div className={`modal__edit ${showModal ? 'active' : ''}`}>
           <div className="modal__content">
-            <h2>{selectedNote.name}</h2>
-            <p>{selectedNote.content}</p>
-            
-            <button onClick={() => handleUnarchiveNote(selectedNote.id)}>Unarchive</button>
-            <button onClick={() => handleDeleteNote(selectedNote.id)}>Delete</button>
-            <button onClick={handleCloseModal}>Close</button>
+            <h2>Archived Notes for {selectedCategory}</h2>
+            <ul>
+              {archivedNotesForCategory.map((note) => (
+                <li key={note.id}>
+                  <h3>{note.name}</h3>
+                  <p className='content'>{note.content}</p>
+                  <div className="btns__container">
+                    <button onClick={() => handleUnarchiveNote(note.id)}>
+                      <RiInboxUnarchiveFill className="icons" />
+                    </button>
+                    <button onClick={() => handleDeleteNote(note.id)}>
+                      <BsFillTrashFill className="icons" />
+                    </button>
+                    <button
+                      className="selectedNote__btn"
+                      onClick={handleCloseModal}
+                    >
+                      <FaWindowClose className="icons" />
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       )}

@@ -81,10 +81,10 @@ function EditNoteForm({
           </select>
           <textarea value={editedContent} onChange={handleContentChange} />
           <div className="edit__buttons-containr">
-            <button type="submit" className="save__btn">
+            <button  type="submit" className="save__btn">
               Save
             </button>
-            <button onClick={handleCloseEditForm} className="close__edit">
+            <button  onClick={handleCloseEditForm} className="close__edit">
               Close
             </button>
           </div>

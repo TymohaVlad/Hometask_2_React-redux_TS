@@ -36,7 +36,7 @@
   .edit__form {
     display: flex;
     flex-direction: column;
-    max-width: 60%;
+    width: 80%;
     margin: auto;
     gap: 30px;
   }
@@ -58,12 +58,17 @@
     justify-content: center;
     gap: 2%;
   }
-  .submit__btn,
-  .close__btn {
+  .save__btn,
+  .close__edit {
     width: 40%;
     height: 30px;
     font-size: 16px;
     border: none;
     border-radius: 6px;
+  }
+  .edit__buttons-containr{
+    display: flex;
+    justify-content: center;
+    gap: 3%;
   }
   

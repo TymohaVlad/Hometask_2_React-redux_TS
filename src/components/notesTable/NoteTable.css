@@ -10,7 +10,12 @@ tbody{
 }
 th, td {
     padding: 15px;
+    border: solid  1px #dce0f5 ;
   }
+tr:hover{
+    background: rgb(218, 218, 248);
+    transition: 0.3s;
+}  
 .table__buttons{
     width: 40px;
     height: 30px;
@@ -23,3 +28,8 @@ th, td {
     display: flex;
     gap: 3%;
 }
+.table{
+    background-color: #f1f0f0;
+    box-shadow: -1px -1px 5px 0px rgba(0,0,0,0.75);
+}
+
