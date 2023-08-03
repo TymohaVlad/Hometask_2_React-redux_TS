@@ -31,7 +31,7 @@ export const notesData = [
         name: 'Wiliam Gaddis',
         createTime: '2023-07-26 ',
         content: 'some content',
-        category: 'Quote',
+        category: 'Task',
         dates: [],
         archived: false,
       },

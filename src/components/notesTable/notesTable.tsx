@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNote, Note } from '../../store/reducers/notesSlice';
+import { addNote, Note, archiveNote, deleteNote, deleteAllNotes } from '../../store/reducers/notesSlice';
 import { RootState } from '../../store/store';
 import { FaEdit } from 'react-icons/fa';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { PiArchiveDuotone } from 'react-icons/pi';
-import { RiInboxUnarchiveFill } from 'react-icons/ri';
 import AddNoteForm from '../AddNoteForm/AddNoteForm';
 import EditNoteForm from '../EditNoteForm/EditNoteForm';
 import ArchivedNote from '../Archived/ArchivedNote';
-import {archiveNote} from '../../store/reducers/ArchivedSlise'
 import './NoteTable.css';
 
 function NotesTable() {
   const dispatch = useDispatch();
-  const notesState = useSelector((state: RootState) => state.notes.notes);
+  const notesState = useSelector((state: RootState) =>
+    state.notes.notes.filter((note) => !note.archived)
+  );
+
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -43,9 +44,10 @@ function NotesTable() {
     setSelectedNote(note);
     setShowEditForm(true);
   };
+
   const handleEditNote = (editNote: Note | null) => {
     if (editNote !== null) {
-    dispatch(addNote(editNote))
+      dispatch(addNote(editNote));
     }
     handleCloseEditForm();
   };
@@ -57,8 +59,35 @@ function NotesTable() {
 
   const handleArchiveNote = (noteId: number) => {
     dispatch(archiveNote(noteId)); 
-    console.log('dispatch')
   };
+
+  const handleArchiveAll = () => {
+    notesState.forEach((note) => {
+      dispatch(archiveNote(note.id))
+    });
+  };
+
+  const handleDeleteNote = (noteId: number) => {
+    dispatch(deleteNote(noteId));
+  };
+
+  const handleDeleteAll = () => {
+    dispatch(deleteAllNotes());
+  };
+  function findDatesInContent(text:string) {
+    const dateRegex = /\d{1,2}\/\d{1,2}\/\d{4}/g;
+    const matches = text.match(dateRegex);
+  
+    if (matches) {
+      return [...new Set(matches)];
+    }
+    return [];
+  }
+  const getDatesFromContent = (text: string) => {
+    const dates = findDatesInContent(text);
+    return dates.join(', ');
+  };
+
   return (
     <main className="main">
       <h1 className="notes__title">My Notes</h1>
@@ -74,9 +103,9 @@ function NotesTable() {
               <th>
                 {' '}
                 <button className="archivatedAll table__buttons">
-                  <PiArchiveDuotone className="icon__btn" />
+                  <PiArchiveDuotone onClick={handleArchiveAll} className="icon__btn" />
                 </button>
-                <button className="deleteAll table__buttons">
+                <button className="deleteAll table__buttons" onClick={handleDeleteAll}>
                   <BsFillTrashFill className="icon__btn" />
                 </button>
               </th>
@@ -89,7 +118,7 @@ function NotesTable() {
                 <td>{formatCreateDate(note.createTime)}</td>
                 <td>{note.category}</td>
                 <td>{note.content}</td>
-                <td>{note.dates.join(', ')}</td>
+                <td>{getDatesFromContent(note.content)}</td>
                 <td>
                   <div className="btn__container">
                     <button
@@ -101,10 +130,7 @@ function NotesTable() {
                     <button onClick={() => handleArchiveNote(note.id)} className="archivated table__buttons">
                       <PiArchiveDuotone className="icon__btn" />
                     </button>
-                    <button className="unarchivated table__buttons">
-                      <RiInboxUnarchiveFill className="icon__btn" />
-                    </button>
-                    <button className="trash table__buttons">
+                    <button onClick={() => handleDeleteNote(note.id)} className="trash table__buttons">
                       <BsFillTrashFill className="icon__btn" />
                     </button>
                   </div>
@@ -122,7 +148,7 @@ function NotesTable() {
           onClose={handleEditNote}
           selectedNote={selectedNote}
         />
-        <ArchivedNote/>
+        <ArchivedNote />
       </div>
     </main>
   );

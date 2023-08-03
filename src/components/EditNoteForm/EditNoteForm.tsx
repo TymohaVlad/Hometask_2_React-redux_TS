@@ -23,16 +23,6 @@ function EditNoteForm({
   const [editedContent, setEditedContent] = useState<string>('');
   const [editedCategory, setEditedCategory] = useState<string>('');
 
-  const uniqueCategories = new Set<string>(notesDataState.map((note) => note.category));
-
-  function categoryOptions() {
-    return Array.from(uniqueCategories).map((category) => (
-      <option key={category} value={category}>
-        {category}
-      </option>
-    ));
-  }
-
   useEffect(() => {
     if (selectedNote) {
       setEditedContent(selectedNote.content || '');
@@ -62,12 +52,15 @@ function EditNoteForm({
     }
     onClose(null);
   };
+
   const handleCloseEditForm = () => {
+    onClose(null);
   };
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditedContent(e.target.value);
   };
+
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setEditedCategory(e.target.value);
   };
@@ -82,7 +75,9 @@ function EditNoteForm({
         <h2 className="edit__modal-title">Edit Note</h2>
         <form onSubmit={handleSubmit} className="edit__form">
           <select value={editedCategory} onChange={handleCategoryChange}>
-            {categoryOptions()}
+            <option value="Task">Task</option>
+            <option value="Random Thought">Random Thought</option>
+            <option value="Idea">Idea</option>
           </select>
           <textarea value={editedContent} onChange={handleContentChange} />
           <div className="edit__buttons-containr">

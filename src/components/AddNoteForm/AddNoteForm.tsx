@@ -61,7 +61,9 @@ function AddNoteForm({ showForm, onClose }: AddNoteFormProps) {
         <form className='addNew__form' onSubmit={handleSubmit}>
           <input type="text" name="name" value={newNote.name} onChange={handleChange} placeholder="Name" />
           <select name="category" value={newNote.category} onChange={handleChange} placeholder="Category">
-            {createCategoryOptions()}
+            <option value="Task">Task</option>
+            <option value="Random Thought">Random Thought</option>
+            <option value="Idea">Idea</option>
           </select>
           <textarea name="content" value={newNote.content} onChange={handleChange} placeholder="Content"></textarea>
           <div className='buttons__contsiner'>
