@@ -8,7 +8,6 @@ import { PiArchiveDuotone } from 'react-icons/pi';
 import AddNoteForm from '../AddNoteForm/AddNoteForm';
 import EditNoteForm from '../EditNoteForm/EditNoteForm';
 import ArchivedNote from '../Archived/ArchivedNote';
-import './NoteTable.css';
 
 function NotesTable() {
   const dispatch = useDispatch();
@@ -90,7 +89,7 @@ function NotesTable() {
 
   return (
     <main className="main">
-      <h1 className="notes__title">My Notes</h1>
+      <h1 className="text-3xl font-bold underline text-center mb-5">My Notes</h1>
       <div className="table__container">
         <table className="table">
           <thead>
