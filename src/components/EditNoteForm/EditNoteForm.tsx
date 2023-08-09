@@ -4,8 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import { setNotes } from '../../store/reducers/notesSlice';
 
-import './EditForm.css';
-
 interface EditNoteFormProps {
   showEditForm: boolean;
   onClose: (newNote: Note | null) => void;
@@ -70,21 +68,42 @@ function EditNoteForm({
   }
 
   return (
-    <div className={`modal__edit ${showEditForm ? 'active' : ''}`}>
-      <div className="modal__content-edit">
-        <h2 className="edit__modal-title">Edit Note</h2>
-        <form onSubmit={handleSubmit} className="edit__form">
-          <select value={editedCategory} onChange={handleCategoryChange}>
+    <div
+      className={`modal__edit ${
+        showEditForm ? 'active' : ''
+      } fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50`}
+    >
+      <div className="modal__content-edit bg-blue-300 w-2/3 h-4/5 border border-solid border-gray-800 p-6 rounded-lg flex flex-col items-center gap-4">
+        <h2 className="edit__modal-title text-xl font-semibold">Edit Note</h2>
+        <form
+          onSubmit={handleSubmit}
+          className="mx-auto w-3/5 flex flex-col gap-3 "
+        >
+          <select
+            value={editedCategory}
+            onChange={handleCategoryChange}
+            className="h-10 text-lg"
+          >
             <option value="Task">Task</option>
             <option value="Random Thought">Random Thought</option>
             <option value="Idea">Idea</option>
           </select>
-          <textarea value={editedContent} onChange={handleContentChange} />
-          <div className="edit__buttons-containr">
-            <button  type="submit" className="save__btn">
+          <textarea
+            value={editedContent}
+            onChange={handleContentChange}
+            className=" min-h-150 max-h-300 text-lg border rounded-lg resize-y"
+          />
+          <div className="flex justify-center items-center gap-3">
+            <button
+              type="submit"
+              className="bg-blue-500 py-2 px-4 rounded-lg text-white"
+            >
               Save
             </button>
-            <button  onClick={handleCloseEditForm} className="close__edit">
+            <button
+              onClick={handleCloseEditForm}
+              className="bg-gray-300 py-2 px-4 rounded-lg text-gray-800"
+            >
               Close
             </button>
           </div>

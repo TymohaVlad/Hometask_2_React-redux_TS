@@ -5,7 +5,6 @@ import { archiveNote, deleteNote } from '../../store/reducers/notesSlice';
 import { RiInboxUnarchiveFill } from 'react-icons/ri';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { FaWindowClose } from 'react-icons/fa';
-import './ArchivedNotes.css';
 
 function ArchivedNote() {
   const dispatch = useDispatch();
@@ -57,27 +56,35 @@ function ArchivedNote() {
   return (
     <section className="summary__section">
       <div className="summary__table-container">
-        <table className="summary__table">
+        <table className="summary__table bg-lightgreen text-lg w-4/6 bg-lime-200 mx-auto text-center">
           <thead>
             <tr>
-              <th>Note category</th>
-              <th>Active</th>
-              <th>Archived</th>
-              <th>Unarchive</th>
+              <th className="px-5 py-3">Note category</th>
+              <th className="px-5 py-3">Active</th>
+              <th className="px-5 py-3">Archived</th>
+              <th className="px-5 py-3">Unarchive</th>
             </tr>
           </thead>
           <tbody>
             {uniqueCategories.map((category) => (
-              <tr key={category}>
-                <td>{category}</td>
-                <td>{countActiveNotesByCategory(category)}</td>
-                <td>{countArchivedNotesByCategory(category)}</td>
-                <td>
+              <tr
+                key={category}
+                className="hover:bg-purple-300 transition duration-300"
+              >
+                <td className="px-5 py-3 border border-solid border-gray-300">
+                  {category}
+                </td>
+                <td className="px-5 py-3 border border-solid border-gray-300">
+                  {countActiveNotesByCategory(category)}
+                </td>
+                <td className="px-5 py-3 border border-solid border-gray-300">
+                  {countArchivedNotesByCategory(category)}
+                </td>
+                <td className="px-5 py-3 border border-solid border-gray-300">
                   {countArchivedNotesByCategory(category) > 0 && (
                     <button
-                      id="show__note"
-                      className="unarchivated table__buttons"
                       onClick={() => handleShowModal(category)}
+                      className="bg-blue-500 py-2 px-4 rounded-lg text-white"
                     >
                       Show archived notes
                     </button>
@@ -90,24 +97,36 @@ function ArchivedNote() {
       </div>
 
       {showModal && selectedCategory && (
-        <div className={`modal__edit ${showModal ? 'active' : ''}`}>
-          <div className="modal__content">
-            <h2>Archived Notes for {selectedCategory}</h2>
-            <ul>
+        <div
+          className={`modal__edit ${
+            showModal ? 'active' : ''
+          } fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50`}
+        >
+          <div className="modal__content bg-blue-300 w-2/3 h-4/5 border border-solid border-gray-800 p-6 rounded-lg flex flex-col items-center gap-3">
+            <h2 className="text-xl font-semibold">
+              Archived Notes for {selectedCategory}
+            </h2>
+            <ul className="">
               {archivedNotesForCategory.map((note) => (
-                <li key={note.id}>
-                  <h3>{note.name}</h3>
-                  <p className='content'>{note.content}</p>
-                  <div className="btns__container">
-                    <button onClick={() => handleUnarchiveNote(note.id)}>
+                <li key={note.id} className="w-full">
+                  <h3 className="text-lg font-semibold">{note.name}</h3>
+                  <p className="content text-base">{note.content}</p>
+                  <div className="btns__container mt-2">
+                    <button
+                      onClick={() => handleUnarchiveNote(note.id)}
+                      className="selectedNote__btn"
+                    >
                       <RiInboxUnarchiveFill className="icons" />
                     </button>
-                    <button onClick={() => handleDeleteNote(note.id)}>
+                    <button
+                      onClick={() => handleDeleteNote(note.id)}
+                      className="selectedNote__btn"
+                    >
                       <BsFillTrashFill className="icons" />
                     </button>
                     <button
-                      className="selectedNote__btn"
                       onClick={handleCloseModal}
+                      className="selectedNote__btn"
                     >
                       <FaWindowClose className="icons" />
                     </button>

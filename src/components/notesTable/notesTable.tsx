@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNote, Note, archiveNote, deleteNote, deleteAllNotes } from '../../store/reducers/notesSlice';
+import {
+  addNote,
+  Note,
+  archiveNote,
+  deleteNote,
+  deleteAllNotes,
+} from '../../store/reducers/notesSlice';
 import { RootState } from '../../store/store';
 import { FaEdit } from 'react-icons/fa';
 import { BsFillTrashFill } from 'react-icons/bs';
@@ -57,12 +63,12 @@ function NotesTable() {
   };
 
   const handleArchiveNote = (noteId: number) => {
-    dispatch(archiveNote(noteId)); 
+    dispatch(archiveNote(noteId));
   };
 
   const handleArchiveAll = () => {
     notesState.forEach((note) => {
-      dispatch(archiveNote(note.id))
+      dispatch(archiveNote(note.id));
     });
   };
 
@@ -73,10 +79,10 @@ function NotesTable() {
   const handleDeleteAll = () => {
     dispatch(deleteAllNotes());
   };
-  function findDatesInContent(text:string) {
+  function findDatesInContent(text: string) {
     const dateRegex = /\d{1,2}\/\d{1,2}\/\d{4}/g;
     const matches = text.match(dateRegex);
-  
+
     if (matches) {
       return [...new Set(matches)];
     }
@@ -88,49 +94,75 @@ function NotesTable() {
   };
 
   return (
-    <main className="main">
-      <h1 className="text-3xl font-bold underline text-center mb-5">My Notes</h1>
+    <main className="main p-6">
+      <h1 className="text-4xl font-bold underline text-center mb-5">
+        My Notes
+      </h1>
       <div className="table__container">
-        <table className="table">
+        <table className="text-2xl display-table m-auto table bg-gray-100 shadow">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Created</th>
-              <th>Category</th>
-              <th>Content</th>
-              <th>Dates</th>
-              <th>
-                {' '}
-                <button className="archivatedAll table__buttons">
-                  <PiArchiveDuotone onClick={handleArchiveAll} className="icon__btn" />
+              <th className="px-5 py-3">Name</th>
+              <th className="px-5 py-3">Created</th>
+              <th className="px-5 py-3">Category</th>
+              <th className="px-5 py-3">Content</th>
+              <th className="px-5 py-3">Dates</th>
+              <th className="px-5 py-3">
+                <button
+                  className="archivatedAll table__buttons"
+                  onClick={handleArchiveAll}
+                >
+                  <PiArchiveDuotone className="icon__btn text-2xl m-3" />
                 </button>
-                <button className="deleteAll table__buttons" onClick={handleDeleteAll}>
-                  <BsFillTrashFill className="icon__btn" />
+                <button
+                  className="deleteAll table__buttons"
+                  onClick={handleDeleteAll}
+                >
+                  <BsFillTrashFill className="icon__btn text-2xl m-3" />
                 </button>
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-center">
             {notesState.map((note) => (
-              <tr key={note.id}>
-                <td>{note.name}</td>
-                <td>{formatCreateDate(note.createTime)}</td>
-                <td>{note.category}</td>
-                <td>{note.content}</td>
-                <td>{getDatesFromContent(note.content)}</td>
-                <td>
+              <tr
+                key={note.id}
+                className="hover:bg-purple-300 transition duration-300"
+              >
+                <td className="px-5 py-3 border border-solid border-gray-300">
+                  {note.name}
+                </td>
+                <td className="px-5 py-3 border border-solid border-gray-300">
+                  {formatCreateDate(note.createTime)}
+                </td>
+                <td className="px-5 py-3 border border-solid border-gray-300">
+                  {note.category}
+                </td>
+                <td className="px-5 py-3 border border-solid border-gray-300">
+                  {note.content}
+                </td>
+                <td className="px-5 py-3 border border-solid border-gray-300">
+                  {getDatesFromContent(note.content)}
+                </td>
+                <td className="px-5 py-3 border border-solid border-gray-300">
                   <div className="btn__container">
                     <button
                       onClick={() => handleShowEditForm(note)}
                       className="edit table__buttons"
                     >
-                      <FaEdit className="icon__btn" />
+                      <FaEdit className="icon__btn text-2xl m-1" />
                     </button>
-                    <button onClick={() => handleArchiveNote(note.id)} className="archivated table__buttons">
-                      <PiArchiveDuotone className="icon__btn" />
+                    <button
+                      onClick={() => handleArchiveNote(note.id)}
+                      className="archivated table__buttons"
+                    >
+                      <PiArchiveDuotone className="icon__btn text-2xl m-1" />
                     </button>
-                    <button onClick={() => handleDeleteNote(note.id)} className="trash table__buttons">
-                      <BsFillTrashFill className="icon__btn" />
+                    <button
+                      onClick={() => handleDeleteNote(note.id)}
+                      className="trash table__buttons"
+                    >
+                      <BsFillTrashFill className="icon__btn text-2xl m-1" />
                     </button>
                   </div>
                 </td>
@@ -138,9 +170,14 @@ function NotesTable() {
             ))}
           </tbody>
         </table>
-        <button onClick={handleShowForm} className="addNew__note">
-          Add Note
-        </button>
+        <div className="add__btn-container flex justify-end max-w-4xl m-auto">
+          <button
+            onClick={handleShowForm}
+            className="bg-blue-300 py-1 px-4 rounded-lg text-lg  my-5 "
+          >
+            Add Note
+          </button>
+        </div>
         <AddNoteForm showForm={showForm} onClose={handleAddNote} />
         <EditNoteForm
           showEditForm={showEditForm}
